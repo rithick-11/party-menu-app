@@ -1,4 +1,4 @@
-const menus = [
+export const menus = [
     {
         "id": 1,
         "name": "Tandoori Chicken",
