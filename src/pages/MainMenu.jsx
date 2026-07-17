@@ -2,6 +2,8 @@ import { useMemo, useState } from "react"
 import { getCurrentUser } from "../api"
 import { filterMenuItems } from "../data/menuData"
 import { PageShell, PrimaryButton } from "../components"
+import { useNavigate } from "react-router-dom"
+import { removeAuthData } from "../api"
 
 const categories = [
   { id: "all", label: "All" },
@@ -23,6 +25,12 @@ const MainMenu = () => {
   const [search, setSearch] = useState("")
 
   const user = getCurrentUser()
+  const navigate = useNavigate()
+
+  const onLogout = () => {
+    removeAuthData()
+    navigate("/signin")
+  }
 
   const filteredItems = useMemo(
     () => filterMenuItems({ category, name: search, diet }),
@@ -49,6 +57,7 @@ const MainMenu = () => {
             </button>
             <button
               type="button"
+              onClick={onLogout}
               className="rounded-full border border-white/10 bg-slate-950/80 px-4 py-2 text-sm text-white transition hover:border-orange-400"
             >
               Logout
@@ -67,11 +76,10 @@ const MainMenu = () => {
                       key={item.id}
                       type="button"
                       onClick={() => setCategory(item.id)}
-                      className={`rounded-full px-5 py-2 text-sm font-semibold transition ${
-                        category === item.id
-                          ? "bg-orange-500 text-slate-950 shadow-[0_10px_35px_rgba(249,115,22,0.2)]"
-                          : "border border-white/10 bg-slate-950/90 text-slate-300 hover:border-orange-400 hover:bg-slate-900 hover:text-white"
-                      }`}
+                      className={`rounded-full px-5 py-2 text-sm font-semibold transition ${category === item.id
+                        ? "bg-orange-500 text-slate-950 shadow-[0_10px_35px_rgba(249,115,22,0.2)]"
+                        : "border border-white/10 bg-slate-950/90 text-slate-300 hover:border-orange-400 hover:bg-slate-900 hover:text-white"
+                        }`}
                     >
                       {item.label}
                     </button>
@@ -87,11 +95,10 @@ const MainMenu = () => {
                       key={item.id}
                       type="button"
                       onClick={() => setDiet(item.id)}
-                      className={`rounded-full px-5 py-2 text-sm font-semibold transition ${
-                        diet === item.id
-                          ? "bg-orange-500 text-slate-950 shadow-[0_10px_35px_rgba(249,115,22,0.2)]"
-                          : "border border-white/10 bg-slate-950/90 text-slate-300 hover:border-orange-400 hover:bg-slate-900 hover:text-white"
-                      }`}
+                      className={`rounded-full px-5 py-2 text-sm font-semibold transition ${diet === item.id
+                        ? "bg-orange-500 text-slate-950 shadow-[0_10px_35px_rgba(249,115,22,0.2)]"
+                        : "border border-white/10 bg-slate-950/90 text-slate-300 hover:border-orange-400 hover:bg-slate-900 hover:text-white"
+                        }`}
                     >
                       <span className="inline-flex items-center gap-2">
                         {item.id === "veg" ? "🥬" : item.id === "nonveg" ? "🍖" : null}
