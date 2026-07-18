@@ -32,6 +32,8 @@ const MainMenu = () => {
     navigate("/signin")
   }
 
+  const onViewSavedRecipes = () => navigate("/saved-recipes")
+
   const filteredItems = useMemo(
     () => filterMenuItems({ category, name: search, diet }),
     [category, diet, search]
@@ -51,6 +53,7 @@ const MainMenu = () => {
           <div className="flex flex-wrap items-center gap-3">
             <button
               type="button"
+              onClick={onViewSavedRecipes}
               className="rounded-full border border-white/10 bg-slate-950/80 px-4 py-2 text-sm text-white transition hover:border-orange-400"
             >
               Saved Recipes
@@ -66,7 +69,7 @@ const MainMenu = () => {
         </div>
 
         <div className="rounded-[30px] border border-white/10 bg-slate-950/85 p-7 shadow-[0_30px_80px_rgba(15,23,42,0.6)]">
-          <div className="grid gap-5 lg:grid-cols-[0.85fr_1.15fr]">
+          <div className="">
             <div className="space-y-6">
               <div>
                 <p className="text-xs uppercase tracking-[0.32em] text-orange-300/80">Category</p>
@@ -108,22 +111,23 @@ const MainMenu = () => {
                   ))}
                 </div>
               </div>
-            </div>
 
-            <div className="rounded-3xl border border-white/10 bg-slate-950/90 p-5">
-              <label className="block text-sm font-medium text-slate-400">Search menu</label>
-              <div className="mt-3 flex gap-3">
-                <input
-                  type="text"
-                  value={search}
-                  onChange={(event) => setSearch(event.target.value)}
-                  placeholder="Search by name or ingredient"
-                  className="w-full rounded-3xl border border-white/10 bg-slate-900 px-5 py-3 text-white outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-500/20"
-                />
-                <PrimaryButton type="button" onClick={() => { }}>
-                  Search
-                </PrimaryButton>
+              <div className="w-full">
+                <label className="block text-sm font-medium text-slate-400">Search menu</label>
+                <div className="mt-3 flex gap-3">
+                  <input
+                    type="text"
+                    value={search}
+                    onChange={(event) => setSearch(event.target.value)}
+                    placeholder="Search by name or ingredient"
+                    className="w-full rounded-3xl border border-white/10 bg-slate-900 px-5 py-3 text-white outline-none transition focus:border-orange-400 focus:ring-2 focus:ring-orange-500/20"
+                  />
+                  <PrimaryButton className="px-2" type="button" onClick={() => { }}>
+                    Search
+                  </PrimaryButton>
+                </div>
               </div>
+
             </div>
           </div>
         </div>
@@ -136,9 +140,11 @@ const MainMenu = () => {
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
               {filteredItems.map((item) => (
-                <div
+                <button
                   key={item.id}
-                  className="relative rounded-[28px] border border-white/10 bg-slate-950/90 shadow-[0_20px_60px_rgba(15,23,42,0.35)] transition hover:-translate-y-1"
+                  type="button"
+                  onClick={() => navigate(`/menu/${item.id}`)}
+                  className="group relative text-left rounded-[28px] border border-white/10 bg-slate-950/90 shadow-[0_20px_60px_rgba(15,23,42,0.35)] transition hover:-translate-y-1"
                 >
                   <div className="relative overflow-hidden rounded-t-[28px]">
                     <img
@@ -167,9 +173,10 @@ const MainMenu = () => {
 
                     <div className="flex items-center justify-between gap-3 text-sm text-slate-400">
                       <span>{item.servings}</span>
+                      <span className="text-xs text-slate-500 transition group-hover:text-orange-300">View recipe →</span>
                     </div>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           )}
